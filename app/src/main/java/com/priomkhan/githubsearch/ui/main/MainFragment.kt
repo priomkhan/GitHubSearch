@@ -7,8 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.R
-import com.priomkhan.githubsearch.data.User_SearchResult
+import com.priomkhan.githubsearch.data.UserSearchResult
 
 class MainFragment : Fragment() {
 
@@ -27,7 +28,7 @@ class MainFragment : Fragment() {
         Step:2
         Testing Initial Output
          */
-        val newUser = User_SearchResult("priomkhan","myUrl","myAvatarUrl","myReposUrl")
+        val newUser = UserSearchResult("priomkhan","myUrl","myAvatarUrl","myReposUrl")
         Log.i("GitHubSearch", newUser.toString())
         //End Testing
 
@@ -38,6 +39,7 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
+        Log.i(LOG_TAG,viewModel.monsterData.value.toString())
     }
 
 }

@@ -36,5 +36,17 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/45246737?v=4",
       "url": "https://api.github.com/users/priomhx2",
       "repos_url": "https://api.github.com/users/priomhx2/repos"
-    }
+    },
+  {
+    "login": "priomino",
+    "avatar_url": "https://avatars0.githubusercontent.com/u/5270099?v=4",
+    "url": "https://api.github.com/users/priomino",
+    "repos_url": "https://api.github.com/users/priomino/repos"
+  },
+  {
+    "login": "Prioma98",
+    "avatar_url": "https://avatars2.githubusercontent.com/u/57338863?v=4",
+    "url": "https://api.github.com/users/Prioma98",
+    "repos_url": "https://api.github.com/users/Prioma98/repos"
+  }
 ]

@@ -4,11 +4,14 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.priomkhan.githubsearch.LOG_TAG
-import com.priomkhan.githubsearch.data.User_SearchResult
+import com.priomkhan.githubsearch.data.GitHubRepository
+import com.priomkhan.githubsearch.data.UserSearchResult
 import com.priomkhan.githubsearch.utilities.FileHelper
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+
 
 /*
 Step:4
@@ -27,66 +30,13 @@ Step:4
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
-    /*
-   'listType' a parameter rise Type.
-   We will using this more than once, so we declare this value as a property of the viewModel class.
-    And this creates a custom type that I can use to create or parse JSON content.
-    */
+    //note: passing the app ref
+    private val dataRepo = GitHubRepository(app)
 
-    private val listType = Types.newParameterizedType(List::class.java,User_SearchResult::class.java)
-
-    //I'll create an init block that will be executed when the view model is instantiated.
-    // Then I'll create a variable named text.
-    // I'll get it from filehelper.getTextFromResources,
-    init{
-        // Type the letter R and scroll to the top of this list
-        // and choose the version of the class from your apps base package.
-        // Mine is com.priomkhan.readjsonlocal. Then from there, call raw and your file name (monster_data).
-
-        //Read Data from Assets:
-        val textReadFromAssets = FileHelper.getTextFromAssets(app, "user_data.json")
-        Log.i(LOG_TAG, textReadFromAssets)
-
-        parsetext(textReadFromAssets)
-
-    }
-
-
-
-    /*
-    //Function to Parse JSON strings with Moshi
-    // I'll add a new function that I'll call parseText, and it will receive a text value typed as a string.
- */
-
-    fun parsetext(text: String){
-        /*
-         //'moshi' is a variable that  represents an instance of the Moshi library.
-        // And we use a builder pattern to create the instance with Moshi.Builder.
-         */
-        // If no annotation used
-        val moshi = Moshi.Builder().build()
+    val monsterData = dataRepo.userSearchData
 
 
 
 
-        /*
-        //Creating an adapter object
-         */
-        val adapter : JsonAdapter<List<User_SearchResult>> = moshi.adapter(listType)
 
-        /*
-        //Parsing the file
-         */
-        val userListData = adapter.fromJson(text)
-
-        /*
-        //Here we receiving a list of objects, so we can use for loop to access each object
-         */
-
-        for(user in  userListData?: emptyList()){
-
-            Log.i(LOG_TAG,"${user.login} {\$${user.avatar_url}} {\$${user.repos_url}")
-        }
-
-    }
 }
