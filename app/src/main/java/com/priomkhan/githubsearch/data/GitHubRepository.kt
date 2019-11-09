@@ -28,14 +28,14 @@ class GitHubRepository (val app: Application){
     init {
         //Check Internet Connectivity
         Log.i(LOG_TAG, "Network Available: ${networkAvailable()}")
-        getMonsterData()
+        getUserLocalData()
 
     }
     /*
     //Function to Parse JSON strings with Moshi
     // I'll add a new function that I'll call parseText, and it will receive a text value typed as a string.
   */
-    private fun getMonsterData() {
+    private fun getUserLocalData() {
         //Read Data from Assets:
         val textReadFromAssets = FileHelper.getTextFromAssets(app, "user_data.json")
 

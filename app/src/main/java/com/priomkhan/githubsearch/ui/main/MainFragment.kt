@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.R
 import com.priomkhan.githubsearch.data.UserSearchResult
+import kotlinx.android.synthetic.main.main_fragment.*
+import java.lang.StringBuilder
 
 class MainFragment : Fragment() {
 
@@ -24,6 +27,17 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        viewModel.monsterData.observe(this, Observer {
+            val userNames = StringBuilder()
+
+            for (user in it){
+                userNames.append(user.userName).append("\n")
+            }
+            //Displaying data on Screen
+            message.text = userNames
+        })
         /*
         Step:2
         Testing Initial Output
@@ -35,11 +49,5 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-        Log.i(LOG_TAG,viewModel.monsterData.value.toString())
-    }
 
 }
