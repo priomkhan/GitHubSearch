@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.R
 import com.priomkhan.githubsearch.data.UserSearchResult
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -29,7 +28,7 @@ class MainFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        viewModel.monsterData.observe(this, Observer {
+        viewModel.userData.observe(this, Observer {
             val userNames = StringBuilder()
 
             for (user in it){

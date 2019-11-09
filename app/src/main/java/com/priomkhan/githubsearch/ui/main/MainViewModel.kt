@@ -1,16 +1,8 @@
 package com.priomkhan.githubsearch.ui.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.data.GitHubRepository
-import com.priomkhan.githubsearch.data.UserSearchResult
-import com.priomkhan.githubsearch.utilities.FileHelper
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 
 /*
@@ -33,7 +25,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     //note: passing the app ref
     private val dataRepo = GitHubRepository(app)
 
-    val monsterData = dataRepo.userSearchData
+    //val userData = dataRepo.userSearchLocalData
+
+    val userData = dataRepo.userSearchOnlineData
 
 
 

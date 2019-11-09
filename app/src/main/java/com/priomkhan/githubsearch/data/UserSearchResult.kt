@@ -1,6 +1,7 @@
 package com.priomkhan.githubsearch.data
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 /*
 Step:1
@@ -11,4 +12,4 @@ data class UserSearchResult (
     @Json(name="url") val userUrl: String,
     @Json(name="avatar_url") val avatarUrl: String,
     @Json(name="repos_url") val reposUrl: String
-)
+): Serializable
