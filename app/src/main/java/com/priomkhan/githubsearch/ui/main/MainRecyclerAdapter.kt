@@ -34,8 +34,9 @@ Context and the second will be the data (list of monster objects) that's being p
  */
 
 
-class MainRecyclerAdapter(val context: Context, val users : List<GitHubUser>):
-    RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>(){
+class MainRecyclerAdapter(val context: Context,
+                          val users : List<GitHubUser>,
+                          val itemListener: UserItemListener): RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>(){
 
     /*
     The ViewHolder receives one value, we will call it itemView and it'll be an instance
@@ -120,9 +121,27 @@ class MainRecyclerAdapter(val context: Context, val users : List<GitHubUser>):
             Glide.with(context)
                 .load(user.userSearchResult?.avatarUrl)
                 .into(userImage)
+
+
+
+            /*
+            The holder, that is the view holder has a property called item view that represents
+            the root element of your layout. So I'll start with holder.itemView.setOnClickListener.
+            I'll replace these parenthesis with braces because I want to use a Lambda expression.
+            I want to say when the user selects this item, execute this code and I'll call
+            itemListener.onMonsterItemClick and I'll pass into current monster object so I'm passing
+            the selected data item back up to the fragment. And then I'll complete this code by
+            implementing the onMonsterItemclick function in MainFragment.kt.
+            */
+            holder.itemView.setOnClickListener{
+                itemListener.onUserItemClick(user)
+            }
+
         }
     }
 
-
+    interface UserItemListener{
+        fun onUserItemClick(user: GitHubUser)
+    }
 
 }

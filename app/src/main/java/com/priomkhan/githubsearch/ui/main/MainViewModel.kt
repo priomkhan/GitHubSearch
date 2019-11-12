@@ -11,7 +11,7 @@ import com.priomkhan.githubsearch.data.UserDetails
 /*
 Step:4
 //Now we gonna call FileHelper.getTextFromAssets() function from my ViewModel class.
-// The main view model is associated with the main fragment, and
+// The getData view model is associated with the getData fragment, and
 // it's where we should do all the work of acquiring our user data .
 
 //In order to call that function we need a context
@@ -28,19 +28,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     //note: passing the app ref
     private val dataRepo = GitHubRepository(app)
     val userOnlineData = dataRepo.userOnlineData
-    //val userData = dataRepo.userSearchLocalData
-
-    //val userSearchOnlineData = dataRepo.userSearchOnlineData
-
-    //val userDetailsOnlineData = dataRepo.userDetailsOnlineData
-
-//    fun getUserDetails( ) {
-//
-//       // Log.i(LOG_TAG, "MainViewModel: Calling getDetails(${userName})")
-//
-//        dataRepo.getDetails()
-//
-//
-//    }
+    fun refreshData() {
+        dataRepo.refreshData()
+    }
 
 }

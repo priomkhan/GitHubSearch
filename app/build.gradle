@@ -48,8 +48,8 @@ dependencies {
     //A coroutine is a concurrency design pattern that you can use on Android
     // to simplify code that executes asynchronously.
     //On Android, coroutines help to solve two primary problems:
-    //    Manage long-running tasks that might otherwise block the main thread and cause your app to freeze.
-    //    Providing main-safety, or safely calling network or disk operations from the main thread.
+    //    Manage long-running tasks that might otherwise block the getData thread and cause your app to freeze.
+    //    Providing getData-safety, or safely calling network or disk operations from the getData thread.
     def coroutines_version = "1.2.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"

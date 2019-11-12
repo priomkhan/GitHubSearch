@@ -3,9 +3,7 @@ package com.priomkhan.githubsearch.data
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.ArrayMap
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
 import com.priomkhan.githubsearch.GITHUB_SERVICE_URL
@@ -19,15 +17,11 @@ import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
 class GitHubRepository (val app: Application){
     val userSearchLocalData = MutableLiveData<List<UserSearchResult>>()
-    //val userSearchOnlineData = MutableLiveData<List<UserSearchResult>>()
-    //val userDetailsOnlineData = MutableLiveData<ArrayList<UserDetails>>()
-    //val userDetailsDataList = ArrayList<UserDetails>()
     val userOnlineData = MutableLiveData<List<GitHubUser>>()
 
     /*
@@ -42,100 +36,20 @@ class GitHubRepository (val app: Application){
     */
 
     init {
-//        //Check Internet Connectivity
-//        Log.i(LOG_TAG, "Network Available: ${networkAvailable()}")
-//        getUserLocalData()
-//
-//        CoroutineScope(Dispatchers.IO).launch {
-//           callGitHubWebService()
-//        }
 
-
-        main()
-//
+        refreshData()
    }
 
 
+    fun refreshData() {
 
-//    @WorkerThread
-//    suspend fun callGitHubWebService() {
-//        if(networkAvailable()){
-//            Log.i(LOG_TAG, "Network Available: Getting Data....")
-//            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-//            val retrofit = Retrofit.Builder()
-//                .baseUrl(GITHUB_SERVICE_URL)
-//                .addConverterFactory(MoshiConverterFactory.create(moshi)) //we used moshi builder to map the json to class property
-//                .build()
-//
-//            val service = retrofit.create(GitHubUserSearchService::class.java)
-//
-//            val serviceData = service.getUserSearchData().body()?: UserSearchList(0, emptyList())
-//
-//            if(serviceData.total_count>0){
-//
-//
-//                    userSearchOnlineData.postValue(serviceData.items)
-//
-//
-//            }
-//
-//        }
-//
-//
-//
-//    }
-
-//    @WorkerThread
-//    suspend fun getUserInfo(userName: String) {
-//        if(networkAvailable()){
-//            Log.i(LOG_TAG, "Getting User Data....")
-//
-//            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-//            val retrofit = Retrofit.Builder()
-//                .baseUrl(GITHUB_SERVICE_URL)
-//                .addConverterFactory(MoshiConverterFactory.create(moshi)) //we used moshi builder to map the json to class property
-//                .build()
-//
-//            val service = retrofit.create(GitHubUserSearchService::class.java)
-//
-//            val serviceData = service.getUserSearchData().body()?: UserSearchList(0, emptyList())
-//
-//            if(serviceData.total_count>0){
-//
-//
-//                userSearchOnlineData.postValue(serviceData.items)
-//
-//
-//            }
-//
-//        }
-//    }
+        CoroutineScope(Dispatchers.IO).launch{
+            getData()
+        }
 
 
-
-
-
-//    fun main() = runBlocking { // this: CoroutineScope
-//        launch {
-//            delay(200L)
-//            println("Task from runBlocking")
-//        }
-//
-//        coroutineScope { // Creates a coroutine scope
-//            launch {
-//                delay(500L)
-//                println("Task from nested launch")
-//            }
-//
-//            delay(100L)
-//            println("Task from coroutine scope") // This line will be printed before the nested launch
-//        }
-//
-//        println("Coroutine scope is over") // This line is not printed until the nested launch completes
-//    }
-
-
-    fun main() = runBlocking { // this: CoroutineScope
+    }
+    fun getData() = runBlocking { // this: CoroutineScope
         launch {
             Log.i(LOG_TAG,"Task from runBlocking to get search result")
             delay(200L)
@@ -151,7 +65,7 @@ class GitHubRepository (val app: Application){
 
         }
         delay(200L)
-        Log.i(LOG_TAG,"main() Coroutine scope is over") // This line is not printed until the nested launch completes
+        Log.i(LOG_TAG,"getData() Coroutine scope is over") // This line is not printed until the nested launch completes
     }
 
 
@@ -208,116 +122,6 @@ class GitHubRepository (val app: Application){
 
     }
 
-//    fun getDetails()= runBlocking {
-//        launch {
-//            //delay(200L)
-//            Log.i(LOG_TAG,"Task from runBlocking to get User Details Data")
-//            Log.i(LOG_TAG,"GitHubRepository#getDetails: userSearchOnlineData_Size: ${userSearchOnlineData.value?.size}")
-//            Log.i(LOG_TAG,"Task from nested launch to get each user details")
-//
-//
-//            var iterator = userSearchOnlineData.value?.iterator()
-//            while (iterator?.hasNext()!!){
-//                val user =  iterator.next()
-//
-//                //Log.i(LOG_TAG, "String Coroutine for userName: ${user.userName} \n")
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    getUserDetails(user)
-//                }
-//
-//            }
-//
-//        }
-//
-////        coroutineScope { // Creates a coroutine scope to get each user details
-////            launch {
-////                //delay(500L)
-////
-////            }
-////
-////        }
-//
-//        delay(500L)
-//        Log.i(LOG_TAG,"getDetails() Coroutine scope is over") // This line is not printed until the nested launch completes
-//        //userDetailsOnlineData.postValue(userDetailsDataList)
-//
-//
-//    }
-
-
-
-
-//    fun getDetails()= runBlocking{
-//       // launch {
-//            var iterator = userSearchOnlineData.value?.iterator()
-//            while (iterator?.hasNext()!!) {
-//                val user = iterator.next()
-//
-//                //Log.i(LOG_TAG, "String Coroutine for userName: ${user.userName} \n")
-//                val cr = CoroutineScope(Dispatchers.IO).launch {
-//                    delay(2000)
-//                    getUserDetails(user)
-//                }
-//
-//            }
-//        //}
-//        //delay(5000)
-//        //Thread.sleep(5000)
-//
-//        userDetailsOnlineData.postValue(userDetailsDataList)
-//
-//    }
-
-//    fun getDetails()= runBlocking{
-//        launch(Dispatchers.IO) {
-//            Log.i(LOG_TAG,"Task from runBlocking to get search result")
-//            val queue = async(Dispatchers.IO) {
-//                if(networkAvailable()){
-////                    for(i in 1..5){
-////                        delay(500L)
-////                        Log.i(LOG_TAG, "${i}")
-////                    }
-//
-//                    var iterator = userSearchOnlineData.value?.iterator()
-//                    while (iterator?.hasNext()!!) {
-//                        val user = iterator.next()
-//
-//                        //Log.i(LOG_TAG, "String Coroutine for userName: ${user.userName} \n")
-//                        val crDetails = CoroutineScope(Dispatchers.IO).launch {
-//                            //delay(2000)
-//                            getUserDetails(user)
-//                        }
-//
-//                    }
-//
-//                }
-//            }
-//            val result = queue.await()
-//            Log.i(LOG_TAG,"getDetails() Coroutine scope is over ${result}")
-//
-//        }
-//
-//    }
-
-//    fun getDetails()= runBlocking{
-//
-//        var iterator = userSearchOnlineData.value?.iterator()
-//        while (iterator?.hasNext()!!) {
-//            val user = iterator.next()
-//            var userDetails: UserDetails = UserDetails(user,null,null,null,null,null,0,0)
-//            val queue = async(Dispatchers.IO) {
-//                Log.i(LOG_TAG, "Getting Data for: ${user.userName}")
-//                delay(500L)
-//
-//                getUserDetails(userDetails)
-//            }
-//
-//            val result= queue.await()
-//            Log.i(LOG_TAG, "${result} Got Data: ${userDetailsDataList.size}")
-//
-//
-//        }
-//    }
 
     @WorkerThread
     suspend fun getDetails(userSearchList: List<UserSearchResult>){
