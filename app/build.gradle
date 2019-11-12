@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.priomkhan.githubsearch"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -53,6 +53,18 @@ dependencies {
     def coroutines_version = "1.2.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+
+
+    // Android's recycler view component can display structure data, either as a list or a grid.
+    def recyclerview_version ="1.0.0"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+    //Use to load the images at the runtime
+    def glide_version = '4.10.0'
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

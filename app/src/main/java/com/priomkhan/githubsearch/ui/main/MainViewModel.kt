@@ -1,8 +1,11 @@
 package com.priomkhan.githubsearch.ui.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.data.GitHubRepository
+import com.priomkhan.githubsearch.data.UserDetails
 
 
 /*
@@ -24,13 +27,20 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     //note: passing the app ref
     private val dataRepo = GitHubRepository(app)
-
+    val userOnlineData = dataRepo.userOnlineData
     //val userData = dataRepo.userSearchLocalData
 
-    val userData = dataRepo.userSearchOnlineData
+    //val userSearchOnlineData = dataRepo.userSearchOnlineData
 
+    //val userDetailsOnlineData = dataRepo.userDetailsOnlineData
 
-
-
+//    fun getUserDetails( ) {
+//
+//       // Log.i(LOG_TAG, "MainViewModel: Calling getDetails(${userName})")
+//
+//        dataRepo.getDetails()
+//
+//
+//    }
 
 }
