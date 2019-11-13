@@ -3,4 +3,5 @@
     <string name="MainFragment">MainFragment</string>
     <string name="repo_count_head">Repo# :</string>
     <string name="userImage">User Image</string>
+    <string name="blank_fragment">Hello blank fragment</string>
 </resources>

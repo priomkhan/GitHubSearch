@@ -1,10 +1,12 @@
-package com.priomkhan.githubsearch.ui.main
+package com.priomkhan.githubsearch.ui.shared
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.data.GitHubRepository
+import com.priomkhan.githubsearch.data.GitHubUser
 import com.priomkhan.githubsearch.data.UserDetails
 
 
@@ -23,11 +25,14 @@ Step:4
 // We will name it app, and then passes that to the AndroidViewModel's constructor.
  */
 
-class MainViewModel(app: Application) : AndroidViewModel(app) {
+class SharedViewModel(app: Application) : AndroidViewModel(app) {
 
     //note: passing the app ref
     private val dataRepo = GitHubRepository(app)
     val userOnlineData = dataRepo.userOnlineData
+
+    val selectedUser = MutableLiveData<GitHubUser>()
+
     fun refreshData() {
         dataRepo.refreshData()
     }
