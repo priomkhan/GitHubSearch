@@ -3,20 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/mainFragment">
-
+    app:startDestination="@id/login_Fragment">
+    <fragment
+        android:id="@+id/login_Fragment"
+        android:name="com.priomkhan.githubsearch.ui.login.login_Fragment"
+        android:label="fragment_login_"
+        tools:layout="@layout/fragment_login_" >
+        <action
+            android:id="@+id/nav_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.priomkhan.githubsearch.ui.main.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/main_fragment" >
         <action
-            android:id="@+id/action_nav_detail"
+            android:id="@+id/nav_to_detail"
             app:destination="@id/detailedFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailedFragment"
         android:name="com.priomkhan.githubsearch.ui.details.DetailedFragment"
         android:label="fragment_detailed"
-        tools:layout="@layout/fragment_detailed" />
+        tools:layout="@layout/detailed_fragment" />
+
 </navigation>

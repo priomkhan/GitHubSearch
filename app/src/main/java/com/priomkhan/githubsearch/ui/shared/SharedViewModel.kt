@@ -1,13 +1,13 @@
 package com.priomkhan.githubsearch.ui.shared
 
 import android.app.Application
+import android.net.wifi.hotspot2.pps.Credential
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.priomkhan.githubsearch.LOG_TAG
-import com.priomkhan.githubsearch.data.GitHubRepository
-import com.priomkhan.githubsearch.data.GitHubUser
-import com.priomkhan.githubsearch.data.UserDetails
+import com.priomkhan.githubsearch.data.*
+import com.priomkhan.githubsearch.ui.details.DetailedRepoRecyclerAdapter
 
 
 /*
@@ -30,11 +30,36 @@ class SharedViewModel(app: Application) : AndroidViewModel(app) {
     //note: passing the app ref
     private val dataRepo = GitHubRepository(app)
     val userOnlineData = dataRepo.userOnlineData
-
+    val userSearchQuery = dataRepo.userSearchQuery
     val selectedUser = MutableLiveData<GitHubUser>()
+
+    val ifLocalUserExist = dataRepo.localUserInfoExist
+
+    lateinit var  adapter : DetailedRepoRecyclerAdapter
 
     fun refreshData() {
         dataRepo.refreshData()
     }
 
+    fun checkIfUserExist(): Boolean{
+        return dataRepo.checkIfUserInfoExist()
+    }
+
+    fun search(query : String){
+        Log.i(LOG_TAG," SharedViewModel: New Query Search: ${query}")
+        dataRepo.refreshData(query)
+    }
+
+    fun login(userName: String, password:String){
+       dataRepo.userLogin(userName,password)
+    }
+
+    fun clearUserData(){
+        dataRepo.userOnlineData.postValue(emptyList())
+        dataRepo.refreshData()
+    }
+
+    fun logout(){
+        dataRepo.logout()
+    }
 }

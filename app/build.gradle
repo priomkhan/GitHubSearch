@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: "kotlin-kapt" //Need this to activate data binding
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -20,6 +23,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    //Here we enabling dataBinding
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -67,6 +74,18 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
+    //Use SQLite database Room
+    def room_version = "2.2.1"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+
 
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.2.0-rc02'
@@ -75,3 +94,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+
+//compile 'androidx.room:room-ktx:2.2.1'
+//compile 'androidx.room:room-runtime:2.2.1'
+

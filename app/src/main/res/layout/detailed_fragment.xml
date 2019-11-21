@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.priomkhan.githubsearch.ui.shared.SharedViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="0dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="411dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/dUserImage"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:contentDescription="@string/userImage"
+                    android:scaleType="fitCenter"
+                    app:imageUrl="@{viewModel.selectedUser.userSearchResult.avatarUrl}"
+                    tools:contentDescription="Userlogin"
+                    tools:ignore="HardcodedText"
+                    tools:src="@drawable/github_logo" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dUserName"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:textAlignment="textStart"
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="#2196F3"
+                        android:textStyle="bold"
+                        app:userName="@{viewModel.selectedUser.userDetails.name}"
+                        tools:text="Name" />
+
+                    <TextView
+                        android:id="@+id/dUserEmail"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:textAlignment="textStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textStyle="bold"
+                        app:userEmail="@{viewModel.selectedUser.userDetails.email}"
+                        tools:text="Email" />
+
+                    <TextView
+                        android:id="@+id/dUserLocation"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:textAlignment="textStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textStyle="bold"
+                        app:userLocation="@{viewModel.selectedUser.userDetails.location}"
+                        tools:text="Location" />
+
+                    <TextView
+                        android:id="@+id/dUserJoinDate"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textStyle="bold"
+                        app:userJoinDate="@{viewModel.selectedUser.userDetails.created_at}"
+                        tools:text="Join Date" />
+
+                    <TextView
+                        android:id="@+id/dUserFollowers"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textStyle="bold"
+                        app:followers="@{viewModel.selectedUser.userDetails.followers}"
+                        tools:text="followers" />
+
+                    <TextView
+                        android:id="@+id/dUserFollowing"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textStyle="bold"
+                        app:following="@{viewModel.selectedUser.userDetails.following}"
+                        tools:text="following" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dUserBio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#504343"
+                app:userBio="@{viewModel.selectedUser.userDetails.bio}"
+                tools:text="User Biography" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/repoRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#DFDAD7"
+                app:adapter="@{viewModel.adapter}"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:repoList="@{viewModel.selectedUser.userRepoList}" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

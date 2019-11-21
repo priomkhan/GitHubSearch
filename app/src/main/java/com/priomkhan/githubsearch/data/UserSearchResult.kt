@@ -15,7 +15,7 @@ Here we define our user data class that we get from the search result of github 
  */
 data class UserSearchResult(
     @Json(name = "login") val userName: String,
-    @Json(name = "url") val userUrl: String,
+    @Json(name = "html_url") val userUrl: String,
     @Json(name = "avatar_url") val avatarUrl: String,
     @Json(name = "repos_url") val reposUrl: String
 ): Serializable{

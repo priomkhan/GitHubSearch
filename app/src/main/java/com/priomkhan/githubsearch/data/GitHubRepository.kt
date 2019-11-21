@@ -6,8 +6,10 @@ import android.net.ConnectivityManager
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import com.priomkhan.githubsearch.GITHUB_SERVICE_URL
 import com.priomkhan.githubsearch.LOG_TAG
+import com.priomkhan.githubsearch.ui.shared.SharedViewModel
 import com.priomkhan.githubsearch.utilities.FileHelper
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -23,6 +25,13 @@ import kotlin.collections.ArrayList
 class GitHubRepository (val app: Application){
     val userSearchLocalData = MutableLiveData<List<UserSearchResult>>()
     val userOnlineData = MutableLiveData<List<GitHubUser>>()
+    private val userDao = UserDatabase.getDatabase(app).userDao()
+    private lateinit var httpClient: OkHttpClient
+    private lateinit var viewModel: SharedViewModel
+    //Authentication of user
+    val localUserInfo = MutableLiveData<LocalUser>()
+    val localUserInfoExist = MutableLiveData<Boolean>()
+    val userSearchQuery = MutableLiveData<String>()
 
     /*
     'listType' a parameter rise Type.
@@ -37,47 +46,109 @@ class GitHubRepository (val app: Application){
 
     init {
 
-        refreshData()
+        checkIfUserInfoExist()
+
    }
 
 
-    fun refreshData() {
+    fun userLogin(userName: String, password: String){
+        var bool = false
+        CoroutineScope(Dispatchers.IO).launch {
+            userDao.deleteAll()
+            val localUser = LocalUser(0,userName,password)
+            userDao.insertUser(localUser)
+            bool= checkIfUserInfoExist()
+            if(bool){
+                Log.i(LOG_TAG, "User Now Exist in Local Database")
+            }
+        }
+    }
 
-        CoroutineScope(Dispatchers.IO).launch{
-            getData()
+    fun logout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            userDao.deleteAll()
+            userSearchLocalData.postValue(emptyList())
+            userOnlineData.postValue(emptyList())
+            userSearchQuery.postValue("")
+            localUserInfoExist.postValue(false)
+            localUserInfo.postValue(null)
+        }
+    }
+
+    fun checkIfUserInfoExist(): Boolean{
+        var isExist = false
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = userDao.getAll()
+            if(data.isEmpty()){
+                localUserInfoExist.postValue(false)
+                Log.i(LOG_TAG,"Local Database is Empty" )
+                isExist = false
+            }else{
+                localUserInfo.postValue(data[0])
+                localUserInfoExist.postValue(true)
+                Log.i(LOG_TAG,"Local Data: ${data.get(0).toString()}" )
+                isExist = true
+                refreshData()
+
+            }
         }
 
+        return isExist
+    }
+
+    fun refreshData() {
+        val query= userSearchQuery.value?:""
+        if(query.isNotBlank()){
+            CoroutineScope(Dispatchers.IO).launch{
+                Log.i(LOG_TAG,"GitHubRepository: Auto Query Search: ${query}")
+                getData(query)
+            }
+        }
 
     }
-    fun getData() = runBlocking { // this: CoroutineScope
+
+    fun refreshData(query: String) {
+
+        if(query.isNotBlank()){
+            userSearchQuery.postValue(query)
+            CoroutineScope(Dispatchers.IO).launch{
+                Log.i(LOG_TAG,"GitHubRepository: Manual Query Search: ${query}")
+                getData(query)
+            }
+        }
+
+    }
+
+    fun getData(query: String) = runBlocking { // this: CoroutineScope
         launch {
             Log.i(LOG_TAG,"Task from runBlocking to get search result")
-            delay(200L)
+            //delay(200L)
         }
 
         coroutineScope { // Creates a coroutine scope to get each user details
             launch {
 
                 Log.i(LOG_TAG,"Task from nested launch to get each user details")
-                callGitHubWebService()
-                delay(200L)
+                callGitHubWebService(query)
+                //delay(200L)
             }
 
         }
-        delay(200L)
+        //delay(200L)
         Log.i(LOG_TAG,"getData() Coroutine scope is over") // This line is not printed until the nested launch completes
     }
 
 
 
     @WorkerThread
-    suspend fun callGitHubWebService() {
+    suspend fun callGitHubWebService(query: String) {
+        val username = localUserInfo.value?.userName
+        val password = localUserInfo.value?.password
         if(networkAvailable()){
+
+
             Log.i(LOG_TAG, "Network Available: Getting Data....")
             val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
-            val username = "priomkhan"
-            val password = "e53b9dd95e0c650e95629f0c000dd1c891c62c5c"
             val authToken = "Basic " + Base64.getEncoder().encode("$username:$password".toByteArray()).toString(Charsets.UTF_8)
             val httpClient = OkHttpClient.Builder()
                 .addInterceptor { chain ->
@@ -100,7 +171,7 @@ class GitHubRepository (val app: Application){
 
             val service = retrofit.create(GitHubUserSearchService::class.java)
 
-            val serviceData = service.getUserSearchData("priomkhan").body()?: UserSearchList(0, emptyList())
+            val serviceData = service.getUserSearchData(query).body()?: UserSearchList(0, emptyList())
 
             if(serviceData.total_count>0){
                 val total_result = serviceData.total_count
@@ -118,8 +189,6 @@ class GitHubRepository (val app: Application){
 
         }
 
-
-
     }
 
 
@@ -135,28 +204,46 @@ class GitHubRepository (val app: Application){
 
                 //Log.i(LOG_TAG, "#getDetails: user: {${user.userName}}: ${userDetails.name}")
 
-                userList.add(GitHubUser(user,
-
-                    getUserDetails(user)))
+                userList.add(
+                    GitHubUser(user,
+                    getUserDetails(user),
+                        getRepos(user)))
 
             }
 
             val queue = job.join()
-            Log.i(LOG_TAG," All User Details Received($queue): userList size: ${userList.size}")
+            //Log.i(LOG_TAG,"Total User Details Received($queue): userList size: ${userList.size}")
             userOnlineData.postValue(userList)
         }
     }
 
 
+
+
     @WorkerThread
     suspend fun getUserDetails(user: UserSearchResult): UserDetails{
         val userName = user.userName
+        val username = localUserInfo.value?.userName
+        val password = localUserInfo.value?.password
         //Log.i(LOG_TAG, "GitHubRepository: getting data for (${userName})")
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val authToken = "Basic " + Base64.getEncoder().encode("$username:$password".toByteArray()).toString(Charsets.UTF_8)
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val builder = original.newBuilder()
+                    .header("Accept", "application/vnd.github.v3+json")
+                    .header("Authorization", authToken)
+                val request = builder.build()
+                chain.proceed(request)
+            }
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl(GITHUB_SERVICE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi)) //we used moshi builder to map the json to class property
+            .client(httpClient)
             .build()
         val service = retrofit.create(GitHubUserDetailsService::class.java)
 
@@ -169,7 +256,43 @@ class GitHubRepository (val app: Application){
         }
     }
 
+    @WorkerThread
+    suspend fun getRepos(user: UserSearchResult): List<UserRepo> {
+        val userName = user.userName
+        val username = localUserInfo.value?.userName
+        val password = localUserInfo.value?.password
 
+        Log.i(LOG_TAG, "GitHubRepository: getting repo data for (${userName})")
+
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val authToken = "Basic " + Base64.getEncoder().encode("$username:$password".toByteArray()).toString(Charsets.UTF_8)
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val builder = original.newBuilder()
+                    .header("Accept", "application/vnd.github.v3+json")
+                    .header("Authorization", authToken)
+                val request = builder.build()
+                chain.proceed(request)
+            }
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(GITHUB_SERVICE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi)) //we used moshi builder to map the json to class property
+            .client(httpClient)
+            .build()
+        val service = retrofit.create(GitHubUserRepoService::class.java)
+        val response = service.getUserRepos(userName).body()?: emptyList()
+
+        if(response.size >0 ){
+            Log.i(LOG_TAG, "Repo Size: ${response.size}")
+        }else{
+            Log.i(LOG_TAG, "No public repository found ")
+        }
+
+        return response
+    }
 
 
     /*

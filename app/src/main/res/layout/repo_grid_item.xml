@@ -7,16 +7,13 @@
     android:background="@drawable/grid_item_background"
     android:clickable="true"
     android:focusable="true"
-    android:padding="16dp">
-
+    android:padding="4dp">
 
     <ImageView
-        android:id="@+id/userImage"
-        android:layout_width="101dp"
-        android:layout_height="94dp"
+        android:id="@+id/repoImage"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_margin="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:contentDescription="@string/userImage"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,52 +21,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.7"
-        tools:contentDescription="Userlogin"
+        tools:contentDescription="Repo Image"
         tools:ignore="HardcodedText"
-        tools:src="@drawable/github_logo" />
+        tools:src="@drawable/repo_logo" />
 
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/repoName"
         android:layout_width="259dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        app:layout_constraintStart_toEndOf="@+id/userImage"
+        app:layout_constraintStart_toEndOf="@+id/repoImage"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Name" />
+        tools:text="Repo Name" />
 
     <TextView
-        android:id="@+id/repoHeader"
+        android:id="@+id/forkHeader"
         android:layout_width="80dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="4dp"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#D53737"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userImage"
-        app:layout_constraintTop_toBottomOf="@+id/userName"
-        tools:text="@string/repo_count_head" />
+        app:layout_constraintStart_toEndOf="@+id/repoImage"
+        app:layout_constraintTop_toBottomOf="@+id/repoName"
+        tools:text="@string/fork_count_head" />
 
     <TextView
-        android:id="@+id/repoCount"
+        android:id="@+id/forkCount"
         android:layout_width="50dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="30dp"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#2196F3"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/repoHeader"
-        app:layout_constraintTop_toBottomOf="@+id/userName"
+        app:layout_constraintStart_toEndOf="@+id/forkHeader"
+        app:layout_constraintTop_toBottomOf="@+id/repoName"
         tools:text="0" />
 
+    <TextView
+        android:id="@+id/starHeader"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#D53737"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/forkCount"
+        app:layout_constraintTop_toBottomOf="@+id/repoName"
+        tools:text="@string/star_count_head" />
+
+    <TextView
+        android:id="@+id/starCount"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#2196F3"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/starHeader"
+        app:layout_constraintTop_toBottomOf="@+id/repoName"
+        app:layout_constraintVertical_bias="0.393"
+        tools:text="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

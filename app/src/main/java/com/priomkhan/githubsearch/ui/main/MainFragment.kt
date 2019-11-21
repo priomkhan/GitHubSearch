@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -17,6 +19,7 @@ import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.R
 import com.priomkhan.githubsearch.data.GitHubUser
 import com.priomkhan.githubsearch.ui.shared.SharedViewModel
+import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(),
     MainRecyclerAdapter.UserItemListener {
@@ -29,9 +32,9 @@ class MainFragment : Fragment(),
     private lateinit var viewModel: SharedViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeLayout: SwipeRefreshLayout // References to the swiperefreshlayout of main_fragment.xml
-    private lateinit var navController: NavController //New: Here I  declare an instance of the nav_controller class as a property of nav_graph fragment.
+    private lateinit var navController: NavController //Here I  declare an instance of the nav_controller class as a property of nav_graph fragment.
 
-    private var count =0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,12 +51,18 @@ class MainFragment : Fragment(),
             requireActivity(),R.id.nav_host
         )
 
+
+
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java)
+
         swipeLayout = view.findViewById(R.id.swipeLayout)
         swipeLayout.setOnRefreshListener {
             viewModel.refreshData()
         }
 
-        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java)
+        viewModel.ifLocalUserExist.observe(this, Observer {
+            viewModel.refreshData()
+        })
 
         viewModel.userOnlineData.observe(this, Observer {
 
@@ -62,6 +71,34 @@ class MainFragment : Fragment(),
             swipeLayout.isRefreshing = false //turning of refreshing indicator off.
 
         })
+
+        //Logout button
+        val btn_Logout = view.findViewById(R.id.btn_Logout) as Button
+        btn_Logout.setOnClickListener {
+            viewModel.logout()
+            navController.navigateUp()
+
+        }
+
+
+        val searchView = view.findViewById(R.id.sv_SearchUser) as SearchView
+
+        searchView.setQueryHint("Search for GitHub User")
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val newQurey = query?:""
+                Log.i(LOG_TAG," MainFragment: New Query Search: ${newQurey}")
+                viewModel.search(newQurey)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //viewModel.search(newText?:"")
+                return false
+            }
+
+        })
+
 
         /*
         Step:2
@@ -78,7 +115,9 @@ class MainFragment : Fragment(),
         Log.i(LOG_TAG, "Selected User: ${user.userSearchResult?.userName}")
 
         viewModel.selectedUser.value = user
-        navController.navigate(R.id.action_nav_detail)
+        navController.navigate(R.id.nav_to_detail)
 
     }
+
+
 }

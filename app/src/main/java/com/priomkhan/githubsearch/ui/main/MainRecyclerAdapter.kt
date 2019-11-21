@@ -2,6 +2,7 @@ package com.priomkhan.githubsearch.ui.main
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.R
 import com.priomkhan.githubsearch.data.GitHubUser
 
@@ -54,11 +56,11 @@ class MainRecyclerAdapter(val context: Context,
 
         val userImage = itemView.findViewById<ImageView>(R.id.userImage)
 
-        val nameText = itemView.findViewById<TextView>(R.id.userText)
+        val nameText = itemView.findViewById<TextView>(R.id.userName)
 
-        val repoCount = itemView.findViewById<TextView>(R.id.repoCountText)
+        val repoCount = itemView.findViewById<TextView>(R.id.repoCount)
 
-        val repoHeader = itemView.findViewById<TextView>(R.id.repoHeadText)
+        val repoHeader = itemView.findViewById<TextView>(R.id.repoHeader)
 
     }
 
@@ -90,7 +92,6 @@ class MainRecyclerAdapter(val context: Context,
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
-
         /*
          Next, I need to assign values to each of the view objects in the holder.
          I'll start with a 'with' expression, because I'm going to be referencing the

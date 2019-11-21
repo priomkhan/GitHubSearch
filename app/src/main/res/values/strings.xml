@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">GitHub Search</string>
-    <string name="MainFragment">MainFragment</string>
-    <string name="repo_count_head">Repo# :</string>
+    <string name="repo_count_head">#Repo:</string>
     <string name="userImage">User Image</string>
-    <string name="blank_fragment">Hello blank fragment</string>
+    <string name="fork_count_head">#Fork:</string>
+    <string name="star_count_head">#Star</string>
+    <string name="password">Password</string>
+    <string name="user_name">User Name</string>
+    <string name="login">Login</string>
+    <string name="submit">Submit</string>
+    <string name="reset">Reset</string>
+    <string name="log_out">Log Out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
