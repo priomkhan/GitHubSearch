@@ -38,4 +38,11 @@ of the documentation.
 
 Download Apk: https://drive.google.com/open?id=1m4spieDAPHyCPRM3bIkE7a8dDM4NVJlE
 
-
+How to Run:
+1) You need a working GitHub Id to login in the app
+2) Id and Password will only be savaed in local database in plain text.
+3) In second screen please select search button and search for github user.
+Note that this app does not verify your password and only use your password to pass basic authentication of github to bypass Github search limit.
+4) Select any user from list and it will show details of that user.
+5) On detailed screen you will see user repocitory list (if any). Click in repository list item will open that repository on browser.
+Note that Search on repository list is not implemented yet.
