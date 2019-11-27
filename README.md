@@ -47,11 +47,12 @@ Note that this app does not verify your password and only use your password to p
 5) On detailed screen you will see user repocitory list (if any). Click in repository list item will open that repository on browser.
 Note that Search on repository list is not implemented yet.
 
-![image](https://drive.google.com/uc?export=view&id=1dFjOmfrOkOLvNlmMd7J9L1fNmaK0F4Fx){:height="36px" width="36px"}
-![image](https://drive.google.com/uc?export=view&id=1qgMdQmSo8sgRdkiBIG5T7oEMHWx1fc7c)
-![image](https://drive.google.com/uc?export=view&id=1NL_8ZH64Pdqx6q2loH4gPC8sM0sweDJi)
-![image](https://drive.google.com/uc?export=view&id=1HT8IXgLG7MKajjsAWH2yGsPKIW1nl4r2)
 
+<a href="url"><img src="https://drive.google.com/uc?export=view&id=1dFjOmfrOkOLvNlmMd7J9L1fNmaK0F4Fx" align="left" height="512" width="300" ></a>
 
-<img src="https://drive.google.com/uc?export=view&id=1HT8IXgLG7MKajjsAWH2yGsPKIW1nl4r2" alt="drawing" style="width:20px;"/>
+<a href="url"><img src="https://drive.google.com/uc?export=view&id=1qgMdQmSo8sgRdkiBIG5T7oEMHWx1fc7c" align="left" height="512" width="300" ></a>
+
+<a href="url"><img src="https://drive.google.com/uc?export=view&id=1NL_8ZH64Pdqx6q2loH4gPC8sM0sweDJi" align="left" height="512" width="300" ></a>
+
+<a href="url"><img src="https://drive.google.com/uc?export=view&id=1HT8IXgLG7MKajjsAWH2yGsPKIW1nl4r2" align="left" height="512" width="300" ></a>
 
