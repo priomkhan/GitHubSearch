@@ -45,7 +45,6 @@ How to Run:
 Note that this app does not verify your password and only use your password to pass basic authentication of github to bypass Github search limit.
 4) Select any user from list and it will show details of that user.
 5) On detailed screen you will see user repocitory list (if any). Click in repository list item will open that repository on browser.
-Note that Search on repository list is not implemented yet.
 
 
 <a href="url"><img src="https://drive.google.com/uc?export=view&id=1dFjOmfrOkOLvNlmMd7J9L1fNmaK0F4Fx" align="left" height="512" width="300" ></a>
