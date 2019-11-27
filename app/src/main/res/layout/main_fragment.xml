@@ -15,32 +15,20 @@
 
         <SearchView
             android:id="@+id/sv_SearchUser"
-            android:layout_width="244dp"
+            android:layout_width="330dp"
             android:layout_height="47dp"
-            app:layout_constraintBottom_toTopOf="@+id/swipeLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/btn_Logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_light"
-            android:text="@string/log_out"
-            app:layout_constraintBottom_toTopOf="@+id/swipeLayout"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="19dp"
+            android:layout_height="0dp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/swipeLayout"
-            app:layout_constraintEnd_toStartOf="@+id/btn_Logout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/sv_SearchUser"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_Logout">
+            app:layout_constraintTop_toBottomOf="@+id/sv_SearchUser">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -63,8 +51,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

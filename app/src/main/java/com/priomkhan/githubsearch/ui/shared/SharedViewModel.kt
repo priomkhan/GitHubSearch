@@ -63,6 +63,7 @@ class SharedViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun logout(){
+
         dataRepo.logout()
     }
 }

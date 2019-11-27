@@ -1,12 +1,11 @@
 package com.priomkhan.githubsearch.ui.main
 
+import android.graphics.Color
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.SearchView
@@ -20,7 +19,6 @@ import com.priomkhan.githubsearch.LOG_TAG
 import com.priomkhan.githubsearch.R
 import com.priomkhan.githubsearch.data.GitHubUser
 import com.priomkhan.githubsearch.ui.shared.SharedViewModel
-import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(),
     MainRecyclerAdapter.UserItemListener {
@@ -90,7 +88,7 @@ class MainFragment : Fragment(),
         })
 
 
-
+        setHasOptionsMenu(true)
 
         val searchView = view.findViewById(R.id.sv_SearchUser) as SearchView
 
@@ -112,15 +110,6 @@ class MainFragment : Fragment(),
 
         })
 
-
-        //Logout button
-        val btn_Logout = view.findViewById(R.id.btn_Logout) as Button
-        btn_Logout.setOnClickListener {
-            viewModel.logout()
-            navController.navigateUp()
-
-        }
-
         /*
         Step:2
         Testing Initial Output
@@ -137,6 +126,24 @@ class MainFragment : Fragment(),
 
         viewModel.selectedUser.value = user
         navController.navigate(R.id.nav_to_detail)
+
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater){
+
+        inflater.inflate(R.menu.main_menubar,menu)
+        val menuItem = menu.findItem(R.id.tb_logout)
+
+        val btn_LogOut = menuItem.actionView as Button
+        btn_LogOut.setText("LOG OUT")
+        btn_LogOut.setBackgroundColor(Color.RED)
+        btn_LogOut.setOnClickListener{
+            viewModel.logout()
+            navController.navigateUp()
+        }
+
+
 
     }
 
