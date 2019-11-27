@@ -53,7 +53,5 @@ Note that Search on repository list is not implemented yet.
 ![image](https://drive.google.com/uc?export=view&id=1HT8IXgLG7MKajjsAWH2yGsPKIW1nl4r2)
 
 
-![test image size]((https://drive.google.com/uc?export=view&id=1dFjOmfrOkOLvNlmMd7J9L1fNmaK0F4Fx){:class="img-responsive"}
-![test image size](/img/post-bg-2015.jpg){:height="50%" width="50%"}
-![test image size](/img/post-bg-2015.jpg){:height="700px" width="400px"}
+<img src="https://drive.google.com/uc?export=view&id=1HT8IXgLG7MKajjsAWH2yGsPKIW1nl4r2" alt="drawing" style="width:200px;"/>
 
