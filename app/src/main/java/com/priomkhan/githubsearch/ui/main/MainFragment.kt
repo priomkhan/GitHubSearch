@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -33,7 +34,7 @@ class MainFragment : Fragment(),
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeLayout: SwipeRefreshLayout // References to the swiperefreshlayout of main_fragment.xml
     private lateinit var navController: NavController //Here I  declare an instance of the nav_controller class as a property of nav_graph fragment.
-
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,13 +46,13 @@ class MainFragment : Fragment(),
         }
 
         val view = inflater.inflate(R.layout.main_fragment, container, false)
-        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView = view.findViewById(R.id.recyclerView) as RecyclerView
 
         navController = Navigation.findNavController(
             requireActivity(),R.id.nav_host
         )
 
-
+        progressBar = view.findViewById(R.id.progressBar) as ProgressBar
 
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java)
 
@@ -66,19 +67,29 @@ class MainFragment : Fragment(),
 
         viewModel.userOnlineData.observe(this, Observer {
 
-            val adapter = MainRecyclerAdapter(requireContext(),it, this)
-            recyclerView.adapter = adapter
-            swipeLayout.isRefreshing = false //turning of refreshing indicator off.
+                val adapter = MainRecyclerAdapter(requireContext(),it, this)
+                recyclerView.adapter = adapter
+                swipeLayout.isRefreshing = false //turning of refreshing indicator off.
+
+
 
         })
 
-        //Logout button
-        val btn_Logout = view.findViewById(R.id.btn_Logout) as Button
-        btn_Logout.setOnClickListener {
-            viewModel.logout()
-            navController.navigateUp()
+        viewModel.busyBool.observe(this, Observer {
 
-        }
+            if(it){
+                progressBar.visibility = View.VISIBLE;
+              //  recyclerView.visibility = View.GONE
+            }else{
+
+                progressBar.visibility = View.INVISIBLE;
+               // recyclerView.visibility = View.VISIBLE
+               recyclerView.adapter?.notifyDataSetChanged();
+            }
+
+        })
+
+
 
 
         val searchView = view.findViewById(R.id.sv_SearchUser) as SearchView
@@ -88,7 +99,9 @@ class MainFragment : Fragment(),
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val newQurey = query?:""
                 Log.i(LOG_TAG," MainFragment: New Query Search: ${newQurey}")
+
                 viewModel.search(newQurey)
+
                 return false
             }
 
@@ -99,6 +112,14 @@ class MainFragment : Fragment(),
 
         })
 
+
+        //Logout button
+        val btn_Logout = view.findViewById(R.id.btn_Logout) as Button
+        btn_Logout.setOnClickListener {
+            viewModel.logout()
+            navController.navigateUp()
+
+        }
 
         /*
         Step:2
