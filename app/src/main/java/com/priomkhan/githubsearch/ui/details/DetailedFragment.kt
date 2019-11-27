@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import android.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,10 +25,16 @@ import com.priomkhan.githubsearch.databinding.DetailedFragmentBinding
 import com.priomkhan.githubsearch.ui.shared.SharedViewModel
 import kotlinx.android.synthetic.main.detailed_fragment.view.*
 
+
+
+
+
+
+
 /**
  * A simple [Fragment] subclass.
  */
-class DetailedFragment : Fragment(),DetailedRepoRecyclerAdapter.RepoItemListener, SearchView.OnQueryTextListener {
+class DetailedFragment : Fragment(),DetailedRepoRecyclerAdapter.RepoItemListener{
 
 
 
@@ -35,6 +42,7 @@ class DetailedFragment : Fragment(),DetailedRepoRecyclerAdapter.RepoItemListener
     private lateinit var navController: NavController //Here is the ref that I copy from MainFragment
     private lateinit var recyclerView: RecyclerView
     private lateinit var repoList: List<UserRepo>
+    private lateinit var filteredRepoList: List<UserRepo>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +77,7 @@ class DetailedFragment : Fragment(),DetailedRepoRecyclerAdapter.RepoItemListener
             if(it.userRepoList!=null){
                 repoList = it.userRepoList
                 Log.i(LOG_TAG, "Number of Repository Found: ${it.userRepoList.size}")
-                val adapter = DetailedRepoRecyclerAdapter(requireContext(),it.userRepoList,this)
+                val adapter = DetailedRepoRecyclerAdapter(requireContext(),repoList,this)
                 viewModel.adapter = adapter
                 //recyclerView.adapter = adapter
             }else{
@@ -78,14 +86,13 @@ class DetailedFragment : Fragment(),DetailedRepoRecyclerAdapter.RepoItemListener
 
         })
 
-
-        setHasOptionsMenu(true)
         /*
         When you use the data binding architecture, each layout that's set up for data binding
         will generate a special class. The name of the class will match the name of the layout
         but without any spaces or special characters. So detail_fragment.XML generates a class
         named DetailFragmentBinding.
         */
+
 
         val binding = DetailedFragmentBinding.inflate(
             inflater, container, false
@@ -120,12 +127,36 @@ class DetailedFragment : Fragment(),DetailedRepoRecyclerAdapter.RepoItemListener
         startActivity(openURL)
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater){
 
-    override fun onQueryTextChange(newText: String?): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        inflater.inflate(R.menu.detail_menubar,menu)
 
+        val menuItem = menu.findItem(R.id.repo_search)
+        val searchView = menuItem.actionView as SearchView
+        searchView.queryHint = "Search Repo"
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Toast.makeText(requireContext(), " onQueryTextSubmit ",Toast.LENGTH_LONG).show()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val query = newText.toString().trim()
+                if(query.isNotBlank() && query.isNotEmpty()){
+                    //Toast.makeText(requireContext(), "Searching for:  ${query} ",Toast.LENGTH_LONG).show()
+                    viewModel.adapter.getFilteredRepo(query)
+
+                }else{
+                    viewModel.adapter.getFilteredRepo("")
+
+                }
+                viewModel.adapter.notifyDataSetChanged()
+                return false
+            }
+
+        })
+
+    }
 }
+

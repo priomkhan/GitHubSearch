@@ -5,8 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.priomkhan.githubsearch.LOG_TAG
@@ -17,6 +20,15 @@ class DetailedRepoRecyclerAdapter(val context: Context,
                                   var repos: List<UserRepo>,
                                   val itemListener: RepoItemListener): RecyclerView.Adapter<DetailedRepoRecyclerAdapter.ViewHolder>(){
 
+
+    val repos_full = ArrayList<UserRepo>()
+    var repos_filtered = ArrayList<UserRepo>()
+
+
+    init {
+        repos_full.addAll(repos)
+        repos_filtered.addAll(repos)
+    }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         /*
@@ -43,19 +55,20 @@ class DetailedRepoRecyclerAdapter(val context: Context,
     }
 
     override fun getItemCount(): Int {
-        return repos.size
+        return repos_filtered.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context) //The parent is the ViewGroup at the root of the layout.
         val view = inflater.inflate(R.layout.repo_grid_item, parent, false)
+
         return ViewHolder(view)
     }
 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repo = repos[position]
+        val repo = repos_filtered[position]
 
         with(holder){
             Glide.with(context)
@@ -94,6 +107,25 @@ class DetailedRepoRecyclerAdapter(val context: Context,
 
         }
     }
+
+
+    public fun getFilteredRepo(query: String) {
+        repos_filtered.clear()
+
+        if(query.isNullOrEmpty()){
+            repos_filtered.addAll(repos_full)
+        }else{
+            if(repos_full.isNotEmpty() && repos_full.size>0){
+                val filterPattern = query
+                repos_filtered = repos_full.filter {
+                    it.repoName!!.startsWith(filterPattern)
+                } as ArrayList<UserRepo>
+            }
+
+        }
+    }
+
+
 
     interface RepoItemListener{
         fun onUserItemClick(repo: UserRepo)

@@ -32,6 +32,9 @@ class SharedViewModel(app: Application) : AndroidViewModel(app) {
     val userOnlineData = dataRepo.userOnlineData
     val userSearchQuery = dataRepo.userSearchQuery
     val selectedUser = MutableLiveData<GitHubUser>()
+    val busyBool = dataRepo.busyBool
+
+
 
     val ifLocalUserExist = dataRepo.localUserInfoExist
 

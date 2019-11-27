@@ -33,6 +33,8 @@ class GitHubRepository (val app: Application){
     val localUserInfoExist = MutableLiveData<Boolean>()
     val userSearchQuery = MutableLiveData<String>()
 
+    val busyBool = MutableLiveData<Boolean>()
+
     /*
     'listType' a parameter rise Type.
     We will using this more than once, so we declare this value as a property of the viewModel class.
@@ -98,7 +100,7 @@ class GitHubRepository (val app: Application){
 
     fun refreshData() {
         val query= userSearchQuery.value?:""
-        if(query.isNotBlank()){
+        if(query.isNotBlank()&&query.isNotEmpty()){
             CoroutineScope(Dispatchers.IO).launch{
                 Log.i(LOG_TAG,"GitHubRepository: Auto Query Search: ${query}")
                 getData(query)
@@ -109,19 +111,23 @@ class GitHubRepository (val app: Application){
 
     fun refreshData(query: String) {
 
-        if(query.isNotBlank()){
+        if(query.isNotBlank()&&query.isNotEmpty()){
             userSearchQuery.postValue(query)
-            CoroutineScope(Dispatchers.IO).launch{
+            val job = CoroutineScope(Dispatchers.IO).launch{
                 Log.i(LOG_TAG,"GitHubRepository: Manual Query Search: ${query}")
                 getData(query)
             }
+        }else{
+            userSearchQuery.postValue("")
         }
 
     }
 
     fun getData(query: String) = runBlocking { // this: CoroutineScope
         launch {
+            busyBool.postValue(true)
             Log.i(LOG_TAG,"Task from runBlocking to get search result")
+
             //delay(200L)
         }
 
@@ -136,6 +142,7 @@ class GitHubRepository (val app: Application){
         }
         //delay(200L)
         Log.i(LOG_TAG,"getData() Coroutine scope is over") // This line is not printed until the nested launch completes
+        busyBool.postValue(false)
     }
 
 

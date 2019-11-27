@@ -137,10 +137,9 @@ fun userBio(view: TextView, value: String?){
     view.text = text
 }
 
-@BindingAdapter("adapter", "repoList", requireAll = false)
-fun repoList(view: RecyclerView, adapter: DetailedRepoRecyclerAdapter, repos: List<UserRepo>){
-
-    view.adapter = adapter
+@BindingAdapter("adapter")
+fun repoList(view: RecyclerView, adapter: DetailedRepoRecyclerAdapter){
+        view.adapter = adapter
 }
 
 
